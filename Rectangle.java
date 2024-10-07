@@ -1,45 +1,35 @@
-package com.demo.beans;
+package shapes;
 
 public class Rectangle extends Shape{
-    int length;
-    int breadth;
+    int l,b;
 
-    public Rectangle() {
-    }
-
-    public Rectangle(String c,int length, int breadth) {
-        super(c);
-        this.length = length;
-        this.breadth = breadth;
+    public Rectangle(String s, int l, int b) {
+        super(s);
+        this.l = l;
+        this.b = b;
     }
 
-    public int getLength() {
-        return length;
+    public int getL() {
+        return l;
     }
 
-    public void setLength(int length) {
-        this.length = length;
+    public void setL(int l) {
+        this.l = l;
     }
 
-    public int getBreadth() {
-        return breadth;
+    public int getB() {
+        return b;
     }
 
-    public void setBreadth(int breadth) {
-        this.breadth = breadth;
+    public void setB(int b) {
+        this.b = b;
     }
 
-    @Override
-    public String toString() {
-        return "Rectangle{" +
-                "length=" + length +
-                ", breadth=" + breadth +
-                '}';
+    public int getArea(){
+        return this.l*this.b;
     }
-    public double calcArea(){
-        return 2*(length+breadth);
+    public int getParam(){
+        return 2*(this.l+this.b);
     }
-    public  double calcParameter(){
-        return this.length*this.breadth;
-    }
+
 }

@@ -1,18 +1,17 @@
-package com.demo.beans;
+package shapes;
 
-abstract public class Shape {
-    String color;
-
-    public Shape() {
+abstract  public class Shape {
+    private String color;
+    Shape(String s){
+        this.color = s;
     }
-    public Shape(String color) {
-        this.color = color;
-    }
+    abstract public int getArea();
+    abstract public int getParam();
 
     public String getColor() {
         return color;
     }
-
+    Shape(){}
     public void setColor(String color) {
         this.color = color;
     }
@@ -23,6 +22,4 @@ abstract public class Shape {
                 "color='" + color + '\'' +
                 '}';
     }
-    abstract public double calcArea();
-    abstract public double calcParameter();
 }

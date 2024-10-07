@@ -1,35 +1,24 @@
-package com.demo.beans;
+package shapes;
 
 public class Circle extends Shape{
-   static final float pi = 3.142f;
-    int radius;
-
-    public Circle() {
-    }
-
-    public Circle(String c,int radius) {
+    int rad;
+    Circle(String c,int r){
         super(c);
-        this.radius = radius;
+        this.rad=r;
+    }
+    Circle(){}
+    public int getRad() {
+        return rad;
     }
 
-    public int getRadius() {
-        return radius;
+    public void setRad(int rad) {
+        this.rad = rad;
     }
 
-    public void setRadius(int radius) {
-        this.radius = radius;
+    public int getArea(){
+        return this.rad*22/7*2;
     }
-
-    @Override
-    public String toString() {
-        return super.toString() + "Circle{" +
-                "radius=" + radius +
-                '}';
-    }
-    public  double calcArea(){
-        return pi*radius*radius;
-    }
-    public  double calcParameter(){
-        return 2*pi*radius;
+    public int getParam(){
+        return 2*22/7*this.rad;
     }
 }
