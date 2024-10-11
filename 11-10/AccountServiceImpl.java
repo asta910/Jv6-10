@@ -1,3 +1,4 @@
+// add pin change
 package com.demo.services;
 
 import java.util.*;
@@ -117,6 +118,55 @@ public class AccountServiceImpl implements AccountService{
             }
         }
             return 3;//wrong credentials
+    }
+
+    //6. change pin
+    public boolean changePin(String s){
+        Accounts account = accountsDao.getOtherUsersAccount(s);
+
+        System.out.println("How would you like to change pin : ");
+        System.out.println("1. With older pin \n2. Use Question ans method \n Enter choice : ");
+
+        int choice = scanner.nextInt();
+        if (choice == 1){
+            System.out.print("Enter current pin : ");
+            int currentPin = scanner.nextInt();
+            if (currentPin == account.getPin()){
+                System.out.println("Enter new Pin : ");
+                int newPin1 = scanner.nextInt();
+                System.out.println("Confirm new Pin : ");
+                int newPin2 = scanner.nextInt();
+                if (newPin1 == newPin2){
+                    account.setPin(newPin1);
+                    return true;
+                }else{
+                    return false;
+                }
+            }else{
+                return false;
+            }
+        }if (choice == 2){
+            String qs = account.getQuestion();
+            String ansReal = account.getAns();
+            System.out.println(qs);
+            System.out.println("Enter you ans : ");
+            String newAns = scanner.next();
+            if (ansReal.equals(newAns)){
+                System.out.println("Enter new Pin : ");
+                int newPin1 = scanner.nextInt();
+                System.out.println("Confirm new Pin : ");
+                int newPin2 = scanner.nextInt();
+                if (newPin1 == newPin2){
+                    account.setPin(newPin1);
+                    return true;
+                }else{
+                    return false;
+                }
+            }else{
+                return false;
+            }
+        }
+        return false;
     }
 
     //10. show all accounts
