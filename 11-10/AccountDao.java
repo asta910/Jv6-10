@@ -8,4 +8,8 @@ public interface AccountDao {
     Set<Accounts> showAll();
     Accounts getAccount(String ac,int p);
     Accounts getOtherUsersAccount(String ac);
+    boolean deleteAccounts(Accounts account);
+    boolean changeQuestion(Accounts account, String qs,String ans);
+    void changeTransactionNo(Accounts account1,Accounts account2);
+    void withdrawNoAndTransfer(Accounts accounts);
 }

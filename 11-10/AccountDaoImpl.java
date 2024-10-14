@@ -42,4 +42,31 @@ public class AccountDaoImpl implements AccountDao{
         return null;
     }
 
+    public boolean deleteAccounts(Accounts account){
+        if (set.contains(account)){
+            set.remove(account);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean changeQuestion(Accounts account, String qs,String ans){
+        account.setQuestion(qs);
+        account.setAns(ans);
+        return true;
+    }
+
+    public void changeTransactionNo(Accounts account1,Accounts account2){
+        int m1= ((CurrentAccount) account1).getMin_no_transactions();
+        int m2= ((CurrentAccount) account2).getMin_no_transactions();
+        m1++;m2++;
+        ((CurrentAccount) account1).setMin_no_transactions(m1);
+        ((CurrentAccount) account2).setMin_no_transactions(m2);
+
+    }
+    public void withdrawNoAndTransfer(Accounts account1){
+        int m1= ((CurrentAccount) account1).getMin_no_transactions();
+        m1++;
+        ((CurrentAccount) account1).setMin_no_transactions(m1);
+    }
 }

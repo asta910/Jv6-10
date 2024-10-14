@@ -61,6 +61,7 @@ public class AccountServiceImpl implements AccountService{
             if (account instanceof CurrentAccount){
                 if ( min > CurrentAccount.getMin_balance()){
                     account.setBalance(min);
+                    accountsDao.withdrawNoAndTransfer(account);
                     return 1;
                 }else{
                     return 2;
@@ -84,6 +85,7 @@ public class AccountServiceImpl implements AccountService{
         if (account != null) {
             int max = account.getBalance() + amount;
             account.setBalance(max);
+            accountsDao.withdrawNoAndTransfer(account);
             return true;
         }
         return false;
@@ -94,6 +96,7 @@ public class AccountServiceImpl implements AccountService{
         Accounts account1 = accountsDao.getAccount(s,pin);
         Accounts otherAccount = accountsDao.getOtherUsersAccount(otherId);
         if (otherAccount == null) return 4; //no other user found
+
         if (account1 != null){
             int min = account1.getBalance() - amount;
             if (account1 instanceof CurrentAccount){
@@ -101,6 +104,7 @@ public class AccountServiceImpl implements AccountService{
                     account1.setBalance(min);
                     int secondAccountNewBalance = otherAccount.getBalance() + amount;
                     otherAccount.setBalance(secondAccountNewBalance);
+                    accountsDao.changeTransactionNo(account1,otherAccount);
                     return 1;
                 }else{
                     return 2;
@@ -117,12 +121,13 @@ public class AccountServiceImpl implements AccountService{
                 }
             }
         }
-            return 3;//wrong credentials
+        return 3;//wrong credentials
     }
 
     //6. change pin
     public boolean changePin(String s){
         Accounts account = accountsDao.getOtherUsersAccount(s);
+        if (account == null) return false;
 
         System.out.println("How would you like to change pin : ");
         System.out.println("1. With older pin \n2. Use Question ans method \n Enter choice : ");
@@ -167,6 +172,24 @@ public class AccountServiceImpl implements AccountService{
             }
         }
         return false;
+    }
+
+    //7 delete account
+    public boolean deleteAccount(String acNo,int pin,int sure){
+        if (sure == 2){
+            System.out.println("You saved yourself" );
+            return false;
+        }
+        Accounts account = accountsDao.getAccount(acNo,pin);
+        if (account == null) return false;
+        return accountsDao.deleteAccounts(account);
+    }
+
+    //8 change question and ans
+    public boolean changeQuestion(String acNo,int pin, String question,String ans){
+        Accounts account = accountsDao.getAccount(acNo,pin);
+        if (account == null) return false;
+        return accountsDao.changeQuestion(account,question,ans);
     }
 
     //10. show all accounts

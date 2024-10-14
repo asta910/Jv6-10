@@ -1,15 +1,14 @@
 package com.demo.test;
 
-import com.demo.services.AccountService;
-import com.demo.services.AccountServiceImpl;
-import com.demo.services.LoginService;
-import com.demo.services.LoginServiceImpl;
+import com.demo.services.*;
 
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class TestAccount {
     public static void main(String[] args) {
         AccountService accountService = new AccountServiceImpl();
+        AdminService adminService = new AdminServiceImpl();
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Welcome to Nedved bank..");
@@ -30,32 +29,34 @@ public class TestAccount {
 
                 switch (choice){
                     case 1 :
-                            System.out.print("1. Savings \n2. Current \n Select : ");
-                            int var = scanner.nextInt();
-                            scanner.nextLine();
-                            boolean res = false;
-                            if(var == 1){
-                               res = accountService.createAccount('S');
-                            }
-                            else if(var == 2){
-                                res = accountService.createAccount('C');
-                            }
-                            if (res){
-                                System.out.println("Account created successfully..");
-                            }else{
-                                System.out.println("Operation failed..");
-                            }
+                        System.out.print("1. Savings \n2. Current \n Select : ");
+                        int var = scanner.nextInt();
+                        scanner.nextLine();
+                        boolean res = false;
+                        if(var == 1){
+                            res = accountService.createAccount('S');
+                        }
+                        else if(var == 2){
+                            res = accountService.createAccount('C');
+                        }
+                        if (res){
+                            System.out.println("Account created successfully..");
+                        }else{
+                            System.out.println("Operation failed..");
+                        }
                         break;
+
                     case 2:
                         System.out.print("Enter account number : ");
                         String acNo = scanner.next();
                         System.out.print("Enter pin : ");
                         int pin = scanner.nextInt();
-                            boolean balance = accountService.displayBalance(acNo,pin);
-                            if (balance){
-                                System.out.println("Wrong credentials..");
-                            }
+                        boolean balance = accountService.displayBalance(acNo,pin);
+                        if (!balance){
+                            System.out.println("Wrong credentials..");
+                        }
                         break;
+
                     case 3:
                         System.out.print("Enter account number : ");
                         acNo = scanner.next();
@@ -72,6 +73,7 @@ public class TestAccount {
                             System.out.println("Wrong credentials");
                         }
                         break;
+
                     case 4:
                         System.out.print("Enter account number : ");
                         acNo = scanner.next();
@@ -98,6 +100,7 @@ public class TestAccount {
                         System.out.print("Enter accountId of other person who you want to transfer : ");
                         String secondAccountId = scanner.next();
                         int fundTransfer = accountService.fundTransfer(acNo,pin,amount,secondAccountId);
+
                         if (fundTransfer == 1){
                             System.out.println("Fund transfer was successful..");
                         }else if(fundTransfer == 2){
@@ -108,24 +111,62 @@ public class TestAccount {
                             System.out.println("No other user found so operation failed..");
                         }
                         break;
+
                     case 6:
+                        System.out.print("Enter account number : ");
+                        acNo = scanner.next();
+                        boolean rez = accountService.changePin(acNo);
+                        if (rez){
+                            System.out.println("Pin changed successfullyy...");
+                        }else{
+                            System.out.println("Operation failed..");
+                        }
                         break;
+
                     case 7:
+                        System.out.print("Enter account number : ");
+                        acNo = scanner.next();
+                        System.out.print("Enter pin : ");
+                        pin = scanner.nextInt();
+                        System.out.println("Are you sure you want to close ? \n1. Yes \n2. No");
+                        int sure = scanner.nextInt();
+                        boolean result = accountService.deleteAccount(acNo,pin,sure);
+                        if (result){
+                            System.out.println("Account deleted successfully.");
+                        }else{
+                            System.out.println("Operation failed.");
+                        }
+
                         break;
                     case 8:
-                        break;
-                    case 9:
+                        System.out.print("Enter account number : ");
+                        acNo = scanner.next();
+                        System.out.print("Enter pin : ");
+                        pin = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.print("Enter new question : ");
+                        String question = scanner.nextLine();
+                        System.out.print("Enter new ans : ");
+                        String an = scanner.next();
+                        boolean qsRes = accountService.changeQuestion(acNo,pin,question,an);
+                        if (qsRes){
+                            System.out.println("Question and ans changed successfully");
+                        }else{
+                            System.out.println("Operation failed.");
+                        }
                         break;
                     case 10:
                         accountService.showAll();
-
                         break;
+
                     default:
                         System.out.println("Only 10 options available..");
                         break;
                 }
             }
         }
+
+
         else if (whoIsThis == 2){
             int choice = 0;
             while(choice != 9){
@@ -136,6 +177,7 @@ public class TestAccount {
 
                 switch (choice){
                     case 1 :
+                        accountService.showAll();
                         break;
                     case 2:
                         break;
@@ -148,6 +190,24 @@ public class TestAccount {
                     case 6:
                         break;
                     case 7:
+                        System.out.println("For which account you want to set interest rate?");
+                        System.out.println("1. Savings Account \n2. Current Account");
+                        int c = scanner.nextInt();
+                        if(c==1){
+                            System.out.println("Enter the interest rate you want to set for saving account: ");
+                            int interest = scanner.nextInt();
+                            adminService.setInterest('C',interest);
+                        }
+                        else if(c==2){
+                            System.out.println("Enter the interest rate you want to set for current account: ");
+                            int interest = scanner.nextInt();
+                            adminService.setInterest('S',interest);
+
+                        }else{
+                            System.out.println("Wrong choice");
+                        }
+
+
                         break;
                     case 8:
                         break;
